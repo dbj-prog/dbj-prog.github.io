@@ -298,6 +298,195 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/07/15/synchronized%E5%85%B3%E9%94%AE%E5%AD%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BingJie Dai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="今天的风甚为喧嚣">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/15/synchronized%E5%85%B3%E9%94%AE%E5%AD%97/" itemprop="url">synchronized关键字</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-15T22:41:24+08:00">
+                2020-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>synchronized关键字标记一个代码块或方法使之成为一个临界区——一次只能有一个线程进入，并执行临界区的代码。在进入临界区前需要获得锁，如果成功获得那么就成功进入到临界区，否则线程就会被阻塞，直到其他线程离开临界区并释放响相应的锁。</p>
+<p>synchronized关键字可以使用在如下两个地方：</p>
+<ul>
+<li>代码块</li>
+<li>方法</li>
+</ul>
+<h5 id="synchronized-block"><a href="#synchronized-block" class="headerlink" title="synchronized block"></a>synchronized block</h5><p>synchronized可以按照如下的方式使用在代码块上，其中的obj是锁住的对象，当多个线程执行这个方法时都需要获得obj的锁，只有获得到了锁才能执行代码块中的内容，否则线程被阻塞直到获得锁。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(obj)&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面的例子中的两个线程都需要获得object的锁，获得锁的先执行，另外一个线程被阻塞直到获得锁。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> concurrent;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedBlock</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        MathClass mathClass = <span class="keyword">new</span> MathClass();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(mathClass, <span class="string">"thread1"</span>);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(mathClass, <span class="string">"thread2"</span>);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MathClass</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//object最好定义为final类型，防止其他在其他地方被修改</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Object object = <span class="keyword">new</span> Object();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//和下面是一样的，只不过一个锁的是当前对象，一个锁的是object</span></span><br><span class="line">        <span class="comment">// synchronized(this)&#123;</span></span><br><span class="line">        <span class="comment">//     for (int i = 0; i &lt; 3; i++) &#123;</span></span><br><span class="line">        <span class="comment">//         System.out.println(Thread.currentThread().getName() + "-&gt;" + i);</span></span><br><span class="line">        <span class="comment">//     &#125;</span></span><br><span class="line">        <span class="comment">// &#125;</span></span><br><span class="line">        <span class="keyword">synchronized</span>(object)&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">200</span>);</span><br><span class="line">                    System.out.println(Thread.currentThread().getName() + <span class="string">"-&gt;"</span> + i);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果是先运行获得锁的线程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">thread1-&gt;<span class="number">0</span></span><br><span class="line">thread1-&gt;<span class="number">1</span></span><br><span class="line">thread1-&gt;<span class="number">2</span></span><br><span class="line">thread2-&gt;<span class="number">0</span></span><br><span class="line">thread2-&gt;<span class="number">1</span></span><br><span class="line">thread2-&gt;<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="注："><a href="#注：" class="headerlink" title="注："></a>注：</h6><p>如果锁住的不是同一个对象，那么线程之间不存在资源竞争的问题</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedBlock</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//这里创建了两个不同的对象</span></span><br><span class="line">        MathClass mathClass1 = <span class="keyword">new</span> MathClass();</span><br><span class="line">        MathClass mathClass2 = <span class="keyword">new</span> MathClass();</span><br><span class="line">        <span class="comment">//两个线程使用的是不同的MathClass,锁对象object不是同一个，因此线程会并发执行</span></span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(mathClass1, <span class="string">"thread1"</span>);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(mathClass2, <span class="string">"thread2"</span>);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果并不是按照顺序执行的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">thread1-&gt;<span class="number">0</span></span><br><span class="line">thread2-&gt;<span class="number">0</span></span><br><span class="line">thread2-&gt;<span class="number">1</span></span><br><span class="line">thread1-&gt;<span class="number">1</span></span><br><span class="line">thread2-&gt;<span class="number">2</span></span><br><span class="line">thread1-&gt;<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="synchronized-method"><a href="#synchronized-method" class="headerlink" title="synchronized method"></a>synchronized method</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">修饰符 <span class="keyword">synchronized</span> 返回值类型 methodName()&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当synchronized使用在非静态方法上时锁住的是当前对象即this</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> concurrent;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedBlock</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        MathClass mathClass1 = <span class="keyword">new</span> MathClass();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(mathClass1, <span class="string">"thread1"</span>);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(mathClass1, <span class="string">"thread2"</span>);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MathClass</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        print();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">"-&gt;"</span> + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>两个线程同时竞争mathClass1对象的锁，获得锁的先执行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">thread1-&gt;<span class="number">0</span></span><br><span class="line">thread1-&gt;<span class="number">1</span></span><br><span class="line">thread1-&gt;<span class="number">2</span></span><br><span class="line">thread2-&gt;<span class="number">0</span></span><br><span class="line">thread2-&gt;<span class="number">1</span></span><br><span class="line">thread2-&gt;<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="注：-1"><a href="#注：-1" class="headerlink" title="注："></a>注：</h6><p>同理，如果锁住的不是同一个对象那么两线程之间是不存在竞争关系的。</p>
+<h5 id="对象级锁和类级锁"><a href="#对象级锁和类级锁" class="headerlink" title="对象级锁和类级锁"></a>对象级锁和类级锁</h5><p>前面介绍的synchronized都是加载非静态方法和非静态代码块上的，此时获取的是对象级锁，当多个线程同时获取同一个对象锁时，只有获得锁的线程会执行，其他会阻塞。synchronized还可以用在静态方法和静态语句块上，此时获取的就是类级锁，即锁住的是整个类，即使使用的是这个类的不同实例，当执行同步代码块时，仍会存在锁竞争。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> concurrent;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutorService;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * synchronized作用于普通方法上，和synchronized(this)的作用是相同的，都是锁住当前的实例对象。</span></span><br><span class="line"><span class="comment"> * 如果是不同的对象，那么不需要进行同步操作。</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * synchronzed作用于静态方法或者synchronized(class)都是锁住了整个类，即使访问不同对象的方法仍然</span></span><br><span class="line"><span class="comment"> * 需要进行同步操作</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//创建两个实例</span></span><br><span class="line">        SynchronizedExample e1 = <span class="keyword">new</span> SynchronizedExample();</span><br><span class="line">        SynchronizedExample e2 = <span class="keyword">new</span> SynchronizedExample();</span><br><span class="line">        ExecutorService service = Executors.newCachedThreadPool();</span><br><span class="line">        <span class="comment">//执行两个线程</span></span><br><span class="line">        service.execute(()-&gt;e1.fun1());</span><br><span class="line">        service.execute(()-&gt;e2.fun1());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 锁住整个类，即使调用该类不同的对象中的方法仍然需要进行同步操作</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SynchronizedExample</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++)&#123;</span><br><span class="line">            System.out.println(i + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果仍旧是先执行获得锁的线程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span> </span><br><span class="line"><span class="number">1</span> </span><br><span class="line"><span class="number">2</span> </span><br><span class="line"><span class="number">0</span> </span><br><span class="line"><span class="number">1</span> </span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li><p>synchronized不能使用在构造方法、属性、局部变量上</p>
+</li>
+<li><p>synchronized锁住的对象如果是空，那么会抛出NullPointerException</p>
+</li>
+<li><p>synchronized的锁对象除了可以使用this,类级锁，也可以是自定义的对象，但是该对象最好是final修饰的。</p>
+</li>
+<li><p>不要使用String文字，因为它们可能在应用程序中的其他地方被引用，并且可能导致死锁。可以使用new String()方式创建的字符串对象。</p>
+</li>
+<li><p>synchronized是可重入锁，即在同步方法内如果调用了相同锁的其他同步代码，那么线程只需要获得一次锁就可以了，进入相同锁的同步代码中时不用重复获取。</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/07/14/%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1806,163 +1995,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/05/29/%E7%94%A8%E4%B8%A4%E4%B8%AA%E6%A0%88%E6%9D%A5%E5%AE%8C%E6%88%90%E4%B8%80%E4%B8%AA%E9%98%9F%E5%88%97%E7%9A%84%E5%85%A5%E9%98%9F%E5%92%8C%E5%87%BA%E9%98%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BingJie Dai">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="今天的风甚为喧嚣">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/29/%E7%94%A8%E4%B8%A4%E4%B8%AA%E6%A0%88%E6%9D%A5%E5%AE%8C%E6%88%90%E4%B8%80%E4%B8%AA%E9%98%9F%E5%88%97%E7%9A%84%E5%85%A5%E9%98%9F%E5%92%8C%E5%87%BA%E9%98%9F/" itemprop="url">用两个栈来完成一个队列的入队和出队</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-29T16:34:40+08:00">
-                2020-05-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构与算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><blockquote>
-<p>用两个栈来实现一个队列，完成队列的 Push 和 Pop 操作。</p>
-</blockquote>
-<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>队列的特点是先进先出,栈的特点是后进先出,顺序进栈的数出栈后变逆序,再经过一次入栈和出栈就变回了原来的顺序.</p>
-<ul>
-<li>如果两个栈都空,执行pop操作应抛出异常</li>
-<li>如果stack2空,执行pop操作应先将stack1中的内容出栈并压入stack2中</li>
-<li></li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    Stack&lt;Integer&gt; stack1 = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">    Stack&lt;Integer&gt; stack2 = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> node)</span> </span>&#123;</span><br><span class="line">        stack1.push(node);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//如果stack1和stack2都空应抛出异常</span></span><br><span class="line">        <span class="keyword">if</span>(!stack2.empty())&#123;</span><br><span class="line">            <span class="keyword">return</span> stack2.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(!stack1.empty())&#123;</span><br><span class="line">            stack2.push(stack1.pop());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> stack2.pop();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="accessibility.next_page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="accessibility.next_page"></i></a>
   </nav>
 
 
@@ -2010,7 +2047,7 @@
             
               <div class="site-state-item site-state-posts">
                 <a href="/archives">
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
