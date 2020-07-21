@@ -298,6 +298,308 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/07/21/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E7%9A%84%E6%9C%80%E5%A4%A7%E5%80%BC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BingJie Dai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="今天的风甚为喧嚣">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/21/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E7%9A%84%E6%9C%80%E5%A4%A7%E5%80%BC/" itemprop="url">滑动窗口的最大值</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-21T23:30:21+08:00">
+                2020-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><blockquote>
+<p>给定一个数组和滑动窗口的大小，找出所有滑动窗口里数值的最大值。例如，如果输入数组{2,3,4,2,6,2,5,1}及滑动窗口的大小3，那么一共存在6个滑动窗口，他们的最大值分别为{4,4,6,6,6,5}； 针对数组{2,3,4,2,6,2,5,1}的滑动窗口有以下6个： {[2,3,4],2,6,2,5,1}， {2,[3,4,2],6,2,5,1}， {2,3,[4,2,6],2,5,1}， {2,3,4,[2,6,2],5,1}， {2,3,4,2,[6,2,5],1}， {2,3,4,2,6,[2,5,1]}。</p>
+</blockquote>
+<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>使用极大堆来保存当前窗口的元素，堆顶就是窗口的最大值。滑动窗口时将窗口最左边的元素从堆中去除，并将新元素加入到堆中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ArrayList&lt;Integer&gt; <span class="title">maxInWindows</span><span class="params">(<span class="keyword">int</span> [] num, <span class="keyword">int</span> size)</span></span>&#123;</span><br><span class="line">    ArrayList&lt;Integer&gt; ret = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">if</span>(num == <span class="keyword">null</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(num.length == <span class="number">0</span> || size &gt; num.length || size &lt; <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//极大堆</span></span><br><span class="line">    PriorityQueue&lt;Integer&gt; w = <span class="keyword">new</span> PriorityQueue&lt;&gt;((o1,o2)-&gt;o2-o1);</span><br><span class="line">    <span class="comment">//设置初始的极大堆</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)&#123;</span><br><span class="line">        w.add(num[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//堆顶为最大值</span></span><br><span class="line">    ret.add(w.peek());</span><br><span class="line">    <span class="comment">//滑动窗口，找出每个窗口的最大值</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>,j = i+size; j &lt; num.length; i++,j++)&#123;</span><br><span class="line">        <span class="comment">//将最左边元素移除</span></span><br><span class="line">        w.remove(num[i]);</span><br><span class="line">        <span class="comment">//将新元素加入堆中</span></span><br><span class="line">        w.add(num[j]);</span><br><span class="line">        <span class="comment">//堆顶为最大值</span></span><br><span class="line">        ret.add(w.peek());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/07/21/%E6%9C%80%E9%95%BF%E4%B8%8D%E5%90%AB%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BingJie Dai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="今天的风甚为喧嚣">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/21/%E6%9C%80%E9%95%BF%E4%B8%8D%E5%90%AB%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2/" itemprop="url">最长不含重复字符的子字符串</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-21T22:01:09+08:00">
+                2020-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><blockquote>
+<p>请从字符串中找出一个最长的不包含重复字符的子字符串，计算该最长子字符串的长度。</p>
+<p>示例 1:</p>
+<p>输入: “abcabcbb”<br>输出: 3<br>解释: 因为无重复字符的最长子串是 “abc”，所以其长度为 3。</p>
+</blockquote>
+<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><h5 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h5><p>使用一个数组d[], d[i]（初始值为1）表示以第i位为尾的子串的最长不包含重复字符的子字符串的长度。依次遍历字符串，对于字符串的第i位s[i],和当前字符之前的d[i-1]位逐个比较（从i-1到i-d[i-1]位），如果两者不同，d[i]自增，否则结束当前比较。</p>
+<p>为什么要和自己的前d[i-1]位进行比较？</p>
+<p>因为d[i-1]是s[i-1]的最长无重复字符的子串长度，当将s[i]加入后，s[i]可能与求得的子串中的字符重复，比较的目的就是找出加上s[i]后的最长无重复字符的子串长度</p>
+<p>在循环的过程中使用max来记录最长的无重复字符的子串长度。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(s == <span class="keyword">null</span> || s.length() == <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> n = s.length();</span><br><span class="line">    <span class="keyword">int</span>[] d = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">    d[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> max = d[<span class="number">0</span>];<span class="comment">//记录最长的不包含重复字符的子串长度</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i++)&#123;</span><br><span class="line">        d[i] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">char</span> c = s.charAt(i);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= d[i-<span class="number">1</span>]; j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s.charAt(i - j) != c)&#123;</span><br><span class="line">                d[i]++;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        max = Math.max(max, d[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h5><p>使用滑动窗口的方法来保存最长无重复字符的子串（窗口内的字符是当前不包含重复字符的最长子串）。滑动窗口使用HashMap来进行存储，其中key是字符，value是对应的下标。使用head和tail表示滑动窗口的右边界和左边界（窗口的范围是[tail,head]）。每遍历一个字符就在HashMap查找对应的下标pos，如果下标不为空说明当前字符在HashMap中，那么就将窗口的左边界移动到pos的下一位（需要取pos和tail的最大值，因为pos对应的下标可能并不在当前滑动窗口内（已经滑过去了））,无论HashMap中是否存在当前字符，都需要将该字符加入到hashMap中（如果存在表示的是更新字符的下标），最后返回滑动窗口的最大值即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">solution</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(s == <span class="keyword">null</span> || s.length() == <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> n = s.length();</span><br><span class="line">    HashMap&lt;Character, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="keyword">int</span> head = <span class="number">0</span>, tail = <span class="number">0</span>, max = <span class="number">1</span>;</span><br><span class="line">    map.put(s.charAt(<span class="number">0</span>), <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        head = i;</span><br><span class="line">        <span class="keyword">char</span> c = s.charAt(i);</span><br><span class="line">        <span class="comment">//获取当前字符的下标</span></span><br><span class="line">        Integer pos = map.get(c);</span><br><span class="line">        <span class="comment">//如果在map中，则更新tail</span></span><br><span class="line">        <span class="keyword">if</span>(pos != <span class="keyword">null</span>)&#123;</span><br><span class="line">            tail = Math.max(pos+<span class="number">1</span>, tail);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//更新或保存当前字符及其下标</span></span><br><span class="line">        map.put(c, i);</span><br><span class="line">        <span class="comment">//修改滑动窗口最大值</span></span><br><span class="line">        max = Math.max(max, head-tail+<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/07/19/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1652,371 +1954,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/06/01/maven%E7%BC%96%E8%AF%91sun.security.validator.ValidatorException/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BingJie Dai">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="今天的风甚为喧嚣">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/06/01/maven%E7%BC%96%E8%AF%91sun.security.validator.ValidatorException/" itemprop="url">maven编译sun.security.validator.ValidatorException</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-01T23:25:35+08:00">
-                2020-06-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/maven/" itemprop="url" rel="index">
-                    <span itemprop="name">maven</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-使用maven出现的问题"><a href="#1-使用maven出现的问题" class="headerlink" title="1.使用maven出现的问题"></a>1.使用maven出现的问题</h4><p>使用maven的过程中出现如下错误：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Could not transfer artifact org.springframework.boot:spring-boot-s</span><br><span class="line">tarter-parent:pom:<span class="number">2.0</span><span class="number">.3</span>.RELEASE from/to nexus-aliyun (http:<span class="comment">//maven</span></span><br><span class="line">.aliyun.com/nexus/content/groups/<span class="keyword">public</span>): sun.security.validator.V</span><br><span class="line">alidatorException: PKIX path building failed: sun.security.provider</span><br><span class="line">.certpath.SunCertPathBuilderException: unable to find valid certifi</span><br><span class="line">cation path to requested target</span><br></pre></td></tr></table></figure>
-
-<p>出现这个问题的原因就是https证书问题，java抓取时忽略掉证书才能访问。也可以通过生成网站的证书，然后再访问。</p>
-<h4 id="2-解决办法"><a href="#2-解决办法" class="headerlink" title="2.解决办法"></a>2.解决办法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.BufferedReader;  </span><br><span class="line"><span class="keyword">import</span> java.io.File;  </span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;  </span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;  </span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;  </span><br><span class="line"><span class="keyword">import</span> java.io.InputStreamReader;  </span><br><span class="line"><span class="keyword">import</span> java.io.OutputStream;  </span><br><span class="line"><span class="keyword">import</span> java.security.KeyStore;  </span><br><span class="line"><span class="keyword">import</span> java.security.MessageDigest;  </span><br><span class="line"><span class="keyword">import</span> java.security.cert.CertificateException;  </span><br><span class="line"><span class="keyword">import</span> java.security.cert.X509Certificate;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> javax.net.ssl.SSLContext;  </span><br><span class="line"><span class="keyword">import</span> javax.net.ssl.SSLException;  </span><br><span class="line"><span class="keyword">import</span> javax.net.ssl.SSLSocket;  </span><br><span class="line"><span class="keyword">import</span> javax.net.ssl.SSLSocketFactory;  </span><br><span class="line"><span class="keyword">import</span> javax.net.ssl.TrustManager;  </span><br><span class="line"><span class="keyword">import</span> javax.net.ssl.TrustManagerFactory;  </span><br><span class="line"><span class="keyword">import</span> javax.net.ssl.X509TrustManager;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InstallCert</span> </span>&#123;  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;  </span><br><span class="line">        String host;  </span><br><span class="line">        <span class="keyword">int</span> port;  </span><br><span class="line">        <span class="keyword">char</span>[] passphrase;  </span><br><span class="line">        <span class="keyword">if</span> ((args.length == <span class="number">1</span>) || (args.length == <span class="number">2</span>)) &#123;  </span><br><span class="line">            String[] c = args[<span class="number">0</span>].split(<span class="string">":"</span>);  </span><br><span class="line">            host = c[<span class="number">0</span>];  </span><br><span class="line">            port = (c.length == <span class="number">1</span>) ? <span class="number">443</span> : Integer.parseInt(c[<span class="number">1</span>]);  </span><br><span class="line">            String p = (args.length == <span class="number">1</span>) ? <span class="string">"changeit"</span> : args[<span class="number">1</span>];  </span><br><span class="line">            passphrase = p.toCharArray();  </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">            System.out  </span><br><span class="line">                    .println(<span class="string">"Usage: java InstallCert &lt;host&gt;[:port] [passphrase]"</span>);  </span><br><span class="line">            <span class="keyword">return</span>;  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        File file = <span class="keyword">new</span> File(<span class="string">"jssecacerts"</span>);  </span><br><span class="line">        <span class="keyword">if</span> (file.isFile() == <span class="keyword">false</span>) &#123;  </span><br><span class="line">            <span class="keyword">char</span> SEP = File.separatorChar;  </span><br><span class="line">            File dir = <span class="keyword">new</span> File(System.getProperty(<span class="string">"java.home"</span>) + SEP + <span class="string">"lib"</span>  </span><br><span class="line">                    + SEP + <span class="string">"security"</span>);  </span><br><span class="line">            file = <span class="keyword">new</span> File(dir, <span class="string">"jssecacerts"</span>);  </span><br><span class="line">            <span class="keyword">if</span> (file.isFile() == <span class="keyword">false</span>) &#123;  </span><br><span class="line">                file = <span class="keyword">new</span> File(dir, <span class="string">"cacerts"</span>);  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">        System.out.println(<span class="string">"Loading KeyStore "</span> + file + <span class="string">"..."</span>);  </span><br><span class="line">        InputStream in = <span class="keyword">new</span> FileInputStream(file);  </span><br><span class="line">        KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());  </span><br><span class="line">        ks.load(in, passphrase);  </span><br><span class="line">        in.close();  </span><br><span class="line">  </span><br><span class="line">        SSLContext context = SSLContext.getInstance(<span class="string">"TLS"</span>);  </span><br><span class="line">        TrustManagerFactory tmf = TrustManagerFactory  </span><br><span class="line">                .getInstance(TrustManagerFactory.getDefaultAlgorithm());  </span><br><span class="line">        tmf.init(ks);  </span><br><span class="line">        X509TrustManager defaultTrustManager = (X509TrustManager) tmf  </span><br><span class="line">                .getTrustManagers()[<span class="number">0</span>];  </span><br><span class="line">        SavingTrustManager tm = <span class="keyword">new</span> SavingTrustManager(defaultTrustManager);  </span><br><span class="line">        context.init(<span class="keyword">null</span>, <span class="keyword">new</span> TrustManager[] &#123; tm &#125;, <span class="keyword">null</span>);  </span><br><span class="line">        SSLSocketFactory factory = context.getSocketFactory();  </span><br><span class="line">  </span><br><span class="line">        System.out  </span><br><span class="line">                .println(<span class="string">"Opening connection to "</span> + host + <span class="string">":"</span> + port + <span class="string">"..."</span>);  </span><br><span class="line">        SSLSocket socket = (SSLSocket) factory.createSocket(host, port);  </span><br><span class="line">        socket.setSoTimeout(<span class="number">10000</span>);  </span><br><span class="line">        <span class="keyword">try</span> &#123;  </span><br><span class="line">            System.out.println(<span class="string">"Starting SSL handshake..."</span>);  </span><br><span class="line">            socket.startHandshake();  </span><br><span class="line">            socket.close();  </span><br><span class="line">            System.out.println();  </span><br><span class="line">            System.out.println(<span class="string">"No errors, certificate is already trusted"</span>);  </span><br><span class="line">        &#125; <span class="keyword">catch</span> (SSLException e) &#123;  </span><br><span class="line">            System.out.println();  </span><br><span class="line">            e.printStackTrace(System.out);  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        X509Certificate[] chain = tm.chain;  </span><br><span class="line">        <span class="keyword">if</span> (chain == <span class="keyword">null</span>) &#123;  </span><br><span class="line">            System.out.println(<span class="string">"Could not obtain server certificate chain"</span>);  </span><br><span class="line">            <span class="keyword">return</span>;  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        BufferedReader reader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(  </span><br><span class="line">                System.in));  </span><br><span class="line">  </span><br><span class="line">        System.out.println();  </span><br><span class="line">        System.out.println(<span class="string">"Server sent "</span> + chain.length + <span class="string">" certificate(s):"</span>);  </span><br><span class="line">        System.out.println();  </span><br><span class="line">        MessageDigest sha1 = MessageDigest.getInstance(<span class="string">"SHA1"</span>);  </span><br><span class="line">        MessageDigest md5 = MessageDigest.getInstance(<span class="string">"MD5"</span>);  </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; chain.length; i++) &#123;  </span><br><span class="line">            X509Certificate cert = chain[i];  </span><br><span class="line">            System.out.println(<span class="string">" "</span> + (i + <span class="number">1</span>) + <span class="string">" Subject "</span>  </span><br><span class="line">                    + cert.getSubjectDN());  </span><br><span class="line">            System.out.println(<span class="string">"   Issuer  "</span> + cert.getIssuerDN());  </span><br><span class="line">            sha1.update(cert.getEncoded());  </span><br><span class="line">            System.out.println(<span class="string">"   sha1    "</span> + toHexString(sha1.digest()));  </span><br><span class="line">            md5.update(cert.getEncoded());  </span><br><span class="line">            System.out.println(<span class="string">"   md5     "</span> + toHexString(md5.digest()));  </span><br><span class="line">            System.out.println();  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        System.out  </span><br><span class="line">                .println(<span class="string">"Enter certificate to add to trusted keystore or 'q' to quit: [1]"</span>);  </span><br><span class="line">        String line = reader.readLine().trim();  </span><br><span class="line">        <span class="keyword">int</span> k;  </span><br><span class="line">        <span class="keyword">try</span> &#123;  </span><br><span class="line">            k = (line.length() == <span class="number">0</span>) ? <span class="number">0</span> : Integer.parseInt(line) - <span class="number">1</span>;  </span><br><span class="line">        &#125; <span class="keyword">catch</span> (NumberFormatException e) &#123;  </span><br><span class="line">            System.out.println(<span class="string">"KeyStore not changed"</span>);  </span><br><span class="line">            <span class="keyword">return</span>;  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        X509Certificate cert = chain[k];  </span><br><span class="line">        String alias = host + <span class="string">"-"</span> + (k + <span class="number">1</span>);  </span><br><span class="line">        ks.setCertificateEntry(alias, cert);  </span><br><span class="line">  </span><br><span class="line">        OutputStream out = <span class="keyword">new</span> FileOutputStream(<span class="string">"jssecacerts"</span>);  </span><br><span class="line">        ks.store(out, passphrase);  </span><br><span class="line">        out.close();  </span><br><span class="line">  </span><br><span class="line">        System.out.println();  </span><br><span class="line">        System.out.println(cert);  </span><br><span class="line">        System.out.println();  </span><br><span class="line">        System.out  </span><br><span class="line">                .println(<span class="string">"Added certificate to keystore 'jssecacerts' using alias '"</span>  </span><br><span class="line">                        + alias + <span class="string">"'"</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">char</span>[] HEXDIGITS = <span class="string">"0123456789abcdef"</span>.toCharArray();  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">toHexString</span><span class="params">(<span class="keyword">byte</span>[] bytes)</span> </span>&#123;  </span><br><span class="line">        StringBuilder sb = <span class="keyword">new</span> StringBuilder(bytes.length * <span class="number">3</span>);  </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> b : bytes) &#123;  </span><br><span class="line">            b &amp;= <span class="number">0xff</span>;  </span><br><span class="line">            sb.append(HEXDIGITS[b &gt;&gt; <span class="number">4</span>]);  </span><br><span class="line">            sb.append(HEXDIGITS[b &amp; <span class="number">15</span>]);  </span><br><span class="line">            sb.append(<span class="string">' '</span>);  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">return</span> sb.toString();  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SavingTrustManager</span> <span class="keyword">implements</span> <span class="title">X509TrustManager</span> </span>&#123;  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> X509TrustManager tm;  </span><br><span class="line">        <span class="keyword">private</span> X509Certificate[] chain;  </span><br><span class="line">  </span><br><span class="line">        SavingTrustManager(X509TrustManager tm) &#123;  </span><br><span class="line">            <span class="keyword">this</span>.tm = tm;  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> X509Certificate[] getAcceptedIssuers() &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkClientTrusted</span><span class="params">(X509Certificate[] chain, String authType)</span></span></span><br><span class="line"><span class="function">                <span class="keyword">throws</span> CertificateException </span>&#123;  </span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkServerTrusted</span><span class="params">(X509Certificate[] chain, String authType)</span></span></span><br><span class="line"><span class="function">                <span class="keyword">throws</span> CertificateException </span>&#123;  </span><br><span class="line">            <span class="keyword">this</span>.chain = chain;  </span><br><span class="line">            tm.checkServerTrusted(chain, authType);  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>保存上面的代码，并编译，在运行的时候使用如下命令：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javac InstallCert maven.aliyun.com</span><br></pre></td></tr></table></figure>
-
-<p>将其中的maven.aliyun.com更改为你要访问的地址。接下来会在你存放刚刚编译的代码下面产生一个名为“jssecacerts”的文件，把这个生成的文件拷贝到你的jdk目录下的jre-&gt;lib-&gt;security下面就可以了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/05/31/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BingJie Dai">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="今天的风甚为喧嚣">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/31/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" itemprop="url">多线程中的基本概念</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-31T22:29:19+08:00">
-                2020-05-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91/" itemprop="url" rel="index">
-                    <span itemprop="name">多线程与并发</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-进程与线程"><a href="#1-进程与线程" class="headerlink" title="1. 进程与线程"></a>1. 进程与线程</h4><h5 id="1-1-什么是进程"><a href="#1-1-什么是进程" class="headerlink" title="1.1 什么是进程"></a>1.1 什么是进程</h5><p>进程是程序的一次执行过程，进程是运行中的程序即是动态的，它是系统运行程序的基本单位。系统运行一个程序就是一个进程从创建到消亡的过程。</p>
-<h5 id="1-2什么是线程"><a href="#1-2什么是线程" class="headerlink" title="1.2什么是线程"></a>1.2什么是线程</h5><p>线程与进程类似，但是线程比进程更小，通常一个进程包含若干个线程，每个进程拥有自己的数据，而线程共享进程中的数据，在Java中线程共享JVM进程中的堆和方法区等资源，但是每个线程有都有自己的<strong>程序计数器</strong>、<strong>本地方法栈</strong>、<strong>虚拟机栈</strong>。与进程相比较，创建线程和在各线程之间切换工作的开销比进程小，因此线程也称为“轻量级”进程。</p>
-<h5 id="1-3为什么使用多线程"><a href="#1-3为什么使用多线程" class="headerlink" title="1.3为什么使用多线程"></a>1.3为什么使用多线程</h5><p>使用多线程的目的就是提高资源的利用率，使程序具有更好的性能。</p>
-<h5 id="1-4使用多线程中可能出现的问题"><a href="#1-4使用多线程中可能出现的问题" class="headerlink" title="1.4使用多线程中可能出现的问题"></a>1.4使用多线程中可能出现的问题</h5><p> 并发编程的目的就是为了提高程序的性能，但是如果使用不当会造成很多的问题，比如：死锁、内存泄漏、线程不安全等。</p>
-<h4 id="2-并行与并发"><a href="#2-并行与并发" class="headerlink" title="2.并行与并发"></a>2.并行与并发</h4><ul>
-<li>并行：<strong>某一时刻，多个线程同时执行</strong>。并行只能出现在多核CPU，单核CPU是不能够实现并行的，因为一个时刻只能有一个线程使用CPU</li>
-<li>并发：<strong>某一时间段，多个线程都在执行</strong>。CPU实际上是通过在不同线程之间频繁的切换，来实现并发的。由于运行和切换耗费的时间很短，所以给用户的感觉就是同一时刻有多个线程在同时执行。但是实际上某一时刻还是只有一个线程在运行。</li>
-</ul>
-<h4 id="3-创建线程的方式"><a href="#3-创建线程的方式" class="headerlink" title="3. 创建线程的方式"></a>3. 创建线程的方式</h4><p>创建线程主要有四种方式：</p>
-<ul>
-<li><strong>继承Thread类</strong>并重写run方法，run方法内就是线程要执行的任务。</li>
-<li><strong>实现Runnable接口</strong>，并实现run方法</li>
-<li><strong>实现Callable接口</strong>，并实现call方法</li>
-<li><strong>使用线程池</strong>来创建和使用线程</li>
-</ul>
-<p>对于使用前两种方式创建线程，并不能在主线程中直接通过调用run()方法的方式运行线程，因为这是普通方法的调用，并没有开启新的线程，应该使用start()方法告知虚拟机，这个线程创建完成可以被调度。</p>
-<h4 id="4-线程的生命周期"><a href="#4-线程的生命周期" class="headerlink" title="4.线程的生命周期"></a>4.线程的生命周期</h4><p>线程的生命周期主要包括创建、就绪、运行、阻塞、终止五个状态。在Java中对线程的生命周期又进行了细分，分别是：</p>
-<table>
-<thead>
-<tr>
-<th>状态</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>New</strong></td>
-<td>初始状态，线程被创建，但是还没有调用start()方法</td>
-</tr>
-<tr>
-<td><strong>Runnable</strong></td>
-<td>运行状态，Java线程将操作系统中的就绪态和运行态笼统的称为“运行中”</td>
-</tr>
-<tr>
-<td><strong>Blocked</strong></td>
-<td>阻塞状态，表示线程阻塞于锁</td>
-</tr>
-<tr>
-<td><strong>Waiting</strong></td>
-<td>等待状态，表示线程进行等待状态，进入该状态表示当前线程需要等待其他线程做出一些特定的动作（通知或中断）</td>
-</tr>
-<tr>
-<td><strong>Timed_waiting</strong></td>
-<td>超时等待状态，该状态不同于Waiting,它是可以在指定时间自行返回的</td>
-</tr>
-<tr>
-<td><strong>Terminated</strong></td>
-<td>终止状态，表示当前线程已经执行完毕</td>
-</tr>
-</tbody></table>
-<h4 id="5-上下文切换"><a href="#5-上下文切换" class="headerlink" title="5.上下文切换"></a>5.上下文切换</h4><blockquote>
-<p>当前任务在执行完CPU时间片切换到另一个任务之前会先保存自己的状态，以便下次再切换到这个任务，可以再加载这个线程的状态。任务从保存到再加载的过程就是一次上下文切换。</p>
-</blockquote>
-<p>由于一个CPU核心某一时刻只能运行一个线程，而当并发的线程数大于CPU核心个数时，为了使得每个线程都能被执行到，CPU采取时间片轮转的方式来运行线程。如果在指定的时间内线程没有运行完成，那么就需要保存当前的状态直到下次运行并且将CPU让给其他线程使用。</p>
-<p>上下文切换通常是计算密集型的。也就是说，它需要相当可观的处理器时间，在每秒几十上百次的切换中，每次切换都需要纳秒量级的时间。所以，上下文切换对系统来说意味着消耗大量的 CPU 时间，事实上，可能是操作系统中时间消耗最大的操作。</p>
-<h4 id="6-死锁"><a href="#6-死锁" class="headerlink" title="6.死锁"></a>6.死锁</h4><h5 id="6-1-什么是死锁"><a href="#6-1-什么是死锁" class="headerlink" title="6.1 什么是死锁"></a>6.1 什么是死锁</h5><p>多个线程同时被阻塞，并且他们中的每一个都在等待对方释放已经占有的资源，但是没有一个提前退出，这种时候就造成了死锁</p>
-<h5 id="6-2死锁的必要条件"><a href="#6-2死锁的必要条件" class="headerlink" title="6.2死锁的必要条件"></a>6.2死锁的必要条件</h5><ul>
-<li><strong>互斥</strong>：某一时刻只能有一个线程使用资源，无法多个线程共享</li>
-<li><strong>请求与保持</strong>：线程已经有了一些资源但是还要申请其他的资源</li>
-<li><strong>不可剥夺</strong>：如果一个线程拥有了资源，呢吗这个资源不能被强制剥夺</li>
-<li><strong>循环等待</strong>：若干进程之间形成一种头尾相接的循环等待资源关系。</li>
-</ul>
-<p>上述四个条件必须同时满足时才能形成死锁。</p>
-<h5 id="6-3如何避免死锁"><a href="#6-3如何避免死锁" class="headerlink" title="6.3如何避免死锁"></a>6.3如何避免死锁</h5><p>避免死锁只需要破坏四个必要条件之一即可，由于某些资源某一时刻只能有一个线程使用（比如打印机）不能实现共享，因此这个条件不能被破坏。可通过破坏其余三个条件来避免死锁：</p>
-<ul>
-<li><strong>破坏请求与保持</strong>：一次性申请所有的资源</li>
-<li><strong>破坏不可剥夺</strong>：如果一个线程申请的资源不能满足，那么允许剥夺其已占有的资源</li>
-<li><strong>破坏循环等待</strong>：为资源进行编号，线程按照资源的顺序依次申请资源。</li>
-</ul>
-<h5 id="6-4-死锁案例与解决方案"><a href="#6-4-死锁案例与解决方案" class="headerlink" title="6.4 死锁案例与解决方案"></a>6.4 死锁案例与解决方案</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> concurrent;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DeadLockDemo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Object resource1 = <span class="keyword">new</span> Object();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Object resource2 = <span class="keyword">new</span> Object();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            <span class="keyword">synchronized</span>(resource1)&#123;</span><br><span class="line">                System.out.println(Thread.currentThread() + <span class="string">"get resources1"</span>);</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">                &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(Thread.currentThread() + <span class="string">"waitting get reosurces2"</span>);</span><br><span class="line">                <span class="keyword">synchronized</span>(resource2)&#123;</span><br><span class="line">                    System.out.println(Thread.currentThread() + <span class="string">"get resources"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            <span class="keyword">synchronized</span>(resource2)&#123;</span><br><span class="line">                System.out.println(Thread.currentThread() + <span class="string">"get resources1"</span>);</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">                &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(Thread.currentThread() + <span class="string">"wating get resources1"</span>);</span><br><span class="line">                <span class="keyword">synchronized</span>(resource1)&#123;</span><br><span class="line">                    System.out.println(Thread.currentThread() + <span class="string">"get resources1"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上述案例中，一个线程锁住resource1然后在没有释放resources的情况下继续申请resources2，而另外一个线程则正好相反，由于满足死锁的四个必要条件，因此导致了死锁。其中使用<code>Thread.sleep(2000)</code>是为了放大产生死锁的概率.</p>
-<p>可以将两个线程中的run方法改成一样的，这样就不会产生死锁了。原因是：线程 1 首先获得到 resource1 的监视器锁,这时候线程 2 就获取不到了。然后线程 1 再去获取 resource2 的监视器锁，可以获取到。然后线程 1 释放了对 resource1、resource2 的监视器锁的占用，线程 2 获取到就可以执行了。这样就破坏了破坏循环等待条件，因此避免了死锁。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> concurrent;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DeadLockDemo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Object resource1 = <span class="keyword">new</span> Object();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Object resource2 = <span class="keyword">new</span> Object();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            <span class="keyword">synchronized</span>(resource1)&#123;</span><br><span class="line">                System.out.println(Thread.currentThread() + <span class="string">"get resources1"</span>);</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">                &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(Thread.currentThread() + <span class="string">"waitting get reosurces2"</span>);</span><br><span class="line">                <span class="keyword">synchronized</span>(resource2)&#123;</span><br><span class="line">                    System.out.println(Thread.currentThread() + <span class="string">"get resources2"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            <span class="keyword">synchronized</span>(resource1)&#123;</span><br><span class="line">                System.out.println(Thread.currentThread() + <span class="string">"get resources1"</span>);</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">                &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(Thread.currentThread() + <span class="string">"wating get resources2"</span>);</span><br><span class="line">                <span class="keyword">synchronized</span>(resource2)&#123;</span><br><span class="line">                    System.out.println(Thread.currentThread() + <span class="string">"get resources2"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2069,7 +2006,7 @@
             
               <div class="site-state-item site-state-posts">
                 <a href="/archives">
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2080,7 +2017,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2091,7 +2028,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
