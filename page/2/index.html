@@ -298,6 +298,319 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/06/13/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BingJie Dai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="今天的风甚为喧嚣">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/13/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/" itemprop="url">Java内存区域</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-13T15:36:29+08:00">
+                2020-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JVM/" itemprop="url" rel="index">
+                    <span itemprop="name">JVM</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Java虚拟机在执行Java程序的过程中会把它所管理的内存划分为若干个不同的区域。这些区域都有各自的用途，以及创建和销毁的时间。Java虚拟机所管理的内存将会包括如下几个运行时数据区域：</p>
+<p>==图片==</p>
+<h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4><p>​        Java程序需要先编译成字节码文件后再解释执行，字节码解释器在解释执行的过程中需要不断读取字节码的内容，程序计数器就是当前线程所执行的字节码的行号指示器。解释器依次读取程序计数器所指示的字节码内容。</p>
+<p>​        由于Java虚拟机的多线程是通过时间片轮转来实现的，那么当从一个线程切换到另外一个线程就需要知道这个线程上次执行到了哪里，以便从上次执行的地方继续执行，因此每一个线程都应该拥有一个程序计数器（程序计数器是线程私有的），各个线程之间计数器互不影响，独立存储。</p>
+<p>​        如果线程正在执行的是Java方法那么计数器记录的是正在执行的虚拟机字节码指令的地址；如果正在执行的是native方法，这个计数器的值就是空（undefined）。程序计数器是一块较小的内存空间，并且是唯一一个在Java虚拟机规范中没有规定任何<code>OutOfMemoryError</code>情况的区域。</p>
+<h4 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h4><p>​       与程序计数器一样Java虚拟机栈也是线程私有的，他的生命周期和线程相同。虚拟机栈描述的是Java方法执行的内存模型：每个方法在执行的同时会创建一个栈帧，用于存储局部变量/操作数栈、动态链接、方法出口等信息。方法从调用直至执行完成的过程，就对应一个栈帧在虚拟机栈中入栈到出栈的过程。</p>
+<p>​       局部变量表存放了编译期可知的各种基本数据类型（Boolean, byte, char, short, int, float, long, double）、对象引用（reference类型，它不等同于对象本身，可能是一个指向对象起始地址的引用指针，也可能是指向一个代表对象的句柄或其他与此对象相关的位置）和<code>returnAddress</code>类型（指向了一个字节码指令的地址）。局部变量表所需要的内存空间在编译期间完成分配，当进入一个方法时，这个方法所需要在栈帧中分配多大的局部变量空间时完全确定的，在运行期间不会改变局部变量表的大小。</p>
+<p>​       在Java虚拟机规范中，对这个区域规定了两种异常状况：如果线程请求的栈深度大于虚拟机栈所允许的深度，那么就会抛出<code>StackOverflowError</code>；如果虚拟机栈可以动态扩展，并且扩展后仍不能申请到足够的内存空间那么就会抛出<code>OutOfMemoryError</code>.</p>
+<h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4><p>​        本地方法栈和Java虚拟机栈的作用是类似的，只不过Java虚拟机栈是在执行Java方法时使用的，而本地方法栈时在执行native方法（非Java方法）时使用的虚拟机规范中并没有对本地方法栈中方法使用的语言、使用方式和数据结构进行强制规定，因此由具体的虚拟机自己实现。有的虚拟机（Sun HotSpot虚拟机）直接把本地方法栈和虚拟机栈合二为一与虚拟机栈相似该区域也会抛出<code>StackOverflowError</code>和<code>OutOfMemoryError</code>.</p>
+<h4 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h4><p>Java中的堆时内存管理中最大的一块，它是一个被线程共享的区域。它的唯一目的就是存放对象的实例，几乎所有的对象实例都在这分配内存。但是随着<code>JIT</code>编译器的发展与逃逸分析技术逐渐成熟，栈上分配、标量替换优化技术将会导致一些微妙的变化。</p>
+<p>Java堆时=是垃圾收集器管理的主要区域，因此很多时候也被称为<code>GC堆（Garbage Collected Heap）</code>。从内存回收的角度看，由于现在收集器都是采用分代收集算法，所以Java堆又可以细分为新生代和老年代；再细致一点分为<code>Eden</code>空间、<code>From Survivor</code>空间、 <code>To Survivor</code>空间等。从内分配角度来看，线程共享的Java堆中可能划分出多个线程私有的分配缓冲区（<code>Thread Local Allocation Buffer， TLAB</code>）。无论如何划分，都与存放内容无关，无论哪个区域，存储的都依旧是对象实例，进一步地划分是为了更好地回收内存，或者更快地分配内存。</p>
+<p>根据Java虚拟机规范，堆既可以是物理上连续的也可以是逻辑上连续的，既可以是固定大小的，也可以是可扩展的。不过当前的主流都是可扩展的，如果在堆中没有内存完成实例分配，并且堆也无法再扩展时，将会抛出<code>OutOfMemoryError</code>。</p>
+<h4 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h4><p>方法区与Java堆一样，是各个线程共享的内存区域，它用于存放已经被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。虽然Java虚拟机规范把方法区描述为堆的一个逻辑部分，但是它却有一个别名叫做Non-Heap（非堆），目的是与Java堆区分开。</p>
+<p>在HotSpot虚拟机中，设计人员将GC分代收集扩展至方法区，或者说使用永久代来实现方法区而已，这样HotSpot的垃圾收集器就可以像管理Java堆一样管理这部分内存，能够省去专门为方法区编写内存管理代码的工作。</p>
+<p>Java虚拟机规范对方法区的限制非常宽松，除了和Java堆一样不需要连续的内存和可以选择固定大小或者可扩展外，还可以选择不实现垃圾收集。相对而言，垃圾收集行为在这个区域是比较少出现的，但并非数据进入了方法区就如永久代的名字一样“永久”存在了。这个区域的内存回收的目标主要是针对常量池的回收和对类型的卸载，条件相当苛刻，但是这部分区域的回收确实是必要的。</p>
+<h4 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h4><p>运行时常量池是方法区的一部分。Class文件中除了有类的版本、字段、方法、接口等描述信息外，还有一项信息是常量池，用于存放编译器生成的各种字面量和符号引用，这部分内容将在类加载后进入方法区的运行时常量池中存放。</p>
+<p>由于常量池是方法区的一部分，自然受到方法区内存的限制，当常量池无法再申请到内存时会抛出<code>OutOfMemoryError</code>异常。</p>
+<h4 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h4><p>直接内存并不是虚拟机运行时数据区的一部分，也不是Java虚拟机规范中定义的内存区域。但是这部分内存也会被频繁地使用，而且也可能导致OutOfMemoryError异常出现。</p>
+<p>在JDK1.4中新加入了NIO(New Input/Output)类，引入了一种基于通道与缓冲区的I/O方式，它可以使用native函数库直接分配堆外内存，然后通过一个存储在Java堆中的DirectByteBuffer对象作为这块内存的引用进行操作。这样在一些情况下可以提高性能，因为避免了在Java堆和native堆中来回复制数据。这部分区域也会出现<code>OutOfMemoryError</code>异常。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/06/09/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%8E%B7%E5%8F%96open_id,union_id,phone/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BingJie Dai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="今天的风甚为喧嚣">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/09/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%8E%B7%E5%8F%96open_id,union_id,phone/" itemprop="url">微信小程序获取open_id,union_id,phone大致流程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-09T23:10:24+08:00">
+                2020-06-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" itemprop="url" rel="index">
+                    <span itemprop="name">微信小程序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-获取open-id-union-id"><a href="#1-获取open-id-union-id" class="headerlink" title="1.获取open_id, union_id"></a>1.获取open_id, union_id</h4><h5 id="小程序："><a href="#小程序：" class="headerlink" title="小程序："></a>小程序：</h5><ol>
+<li>wx.login获取code（有时限）</li>
+<li>wx.getUserInfo获取userInfo, rawData, encryptedData(带有敏感信息的加密数据)等数据</li>
+<li>将code连同加密数据encryptedData发给后台进行解密</li>
+</ol>
+<h5 id="后台："><a href="#后台：" class="headerlink" title="后台："></a>后台：</h5><ol>
+<li>根据code, appid, app_secret向微信服务器发送GET请求，获取open_id, session_key（用于解密，有时限），union_id.</li>
+<li>使用session_key对密文encryptedData进行解密</li>
+</ol>
+<h6 id="疑问？"><a href="#疑问？" class="headerlink" title="疑问？"></a>疑问？</h6><p>既然后台发送GET请求到微信服务器能够获取到open_id, union_id为啥还要使用session_key的方式对encryptedData解密获取open_id, union_id?</p>
+<p><a href="https://juejin.im/entry/589944da570c3500624e4554" target="_blank" rel="noopener">https://juejin.im/entry/589944da570c3500624e4554</a></p>
+<h4 id="2-获取手机号"><a href="#2-获取手机号" class="headerlink" title="2.获取手机号"></a>2.获取手机号</h4><p>button组件的open-type设置为getPhoneNumber,通过回调函数获取到加密数据，然后后台根据session_key和app_id解密数据。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/06/01/maven%E7%BC%96%E8%AF%91sun.security.validator.ValidatorException/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1579,300 +1892,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/05/29/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E6%9F%A5%E6%89%BE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BingJie Dai">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="今天的风甚为喧嚣">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/29/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E6%9F%A5%E6%89%BE/" itemprop="url">二维数组中的查找</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-29T16:34:40+08:00">
-                2020-05-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构与算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><blockquote>
-<p>在一个二维数组中（每个一维数组的长度相同），每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
-</blockquote>
-<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>从二维数组左上角的位置开始(假设值为x),将要查找的数字t和x比较,如果t&gt;x则向当前列的下方查找,否则,向当前行的左侧查找,对于每个新位置都进行上述操作直到找到为止.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">Find</span><span class="params">(<span class="keyword">int</span> target, <span class="keyword">int</span> [][] array)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(array == <span class="keyword">null</span> || array.length ==<span class="number">0</span> || array[<span class="number">0</span>].length == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> row = array.length, r = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> col = array[<span class="number">0</span>].length, c = col-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(r &lt;= row-<span class="number">1</span> &amp;&amp; c&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(array[r][c] == target)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(array[r][c] &lt; target)&#123;</span><br><span class="line">                r++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                c--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/05/29/%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E6%95%B0%E5%AD%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BingJie Dai">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="今天的风甚为喧嚣">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/29/%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E6%95%B0%E5%AD%97/" itemprop="url">数组中的重复数字</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-29T16:34:40+08:00">
-                2020-05-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构与算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><blockquote>
-<p>在一个长度为n的数组里的所有数字都在0到n-1的范围内。 数组中某些数字是重复的，但不知道有几个数字是重复的。也不知道每个数字重复几次。请找出数组中任意一个重复的数字。 例如，如果输入长度为7的数组{2,3,1,0,2,5,3}，那么对应的输出是第一个重复的数字2。</p>
-</blockquote>
-<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>由于所有数字都在0到n-1的范围内,所以可以将值为i的元素放到第i个位置上,即nums[i] = i,如果当前位置i已经有一个值为i的元素就知道i值重复了.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">duplicate</span><span class="params">(<span class="keyword">int</span> numbers[],<span class="keyword">int</span> length,<span class="keyword">int</span> [] duplication)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++)&#123;</span><br><span class="line">            <span class="keyword">while</span>(numbers[i] != i)&#123;</span><br><span class="line">                <span class="keyword">if</span>(numbers[i] == numbers[numbers[i]])&#123;</span><br><span class="line">                    duplication[<span class="number">0</span>] = numbers[i];<span class="comment">//保存重复的数字</span></span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">true</span>;<span class="comment">//有重复的数字返回true,否则false</span></span><br><span class="line">                &#125;</span><br><span class="line">                swap(numbers, i, numbers[i]);             </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] numbers, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> t = numbers[i];</span><br><span class="line">        numbers[i] = numbers[j];</span><br><span class="line">        numbers[j] = t;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1925,7 +1944,7 @@
             
               <div class="site-state-item site-state-posts">
                 <a href="/archives">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1936,7 +1955,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

@@ -298,6 +298,338 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/07/22/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%AD%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E8%8A%82%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BingJie Dai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="今天的风甚为喧嚣">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/22/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%AD%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E8%8A%82%E7%82%B9/" itemprop="url">二叉搜索树的最近公共祖先</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-22T14:52:07+08:00">
+                2020-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><blockquote>
+<p>给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。</p>
+<p>最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”</p>
+</blockquote>
+<p>例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,null,null,3,5]</p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/14/binarysearchtree_improved.png" alt=""></p>
+<h4 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h4><p>由于针对的是二叉搜索树，因此查找公共祖先节点时可以利用二叉搜索树的性质：节点右子树的值都比节点值大，节点左子树的值都比节点值小。</p>
+<p>对于给定两个节点p,q可以和当前节点进行比较，如果都小于当前节点，说明p和q位于节点的左子树，其最近的公共祖先节点也在左子树中；当p和q都大于当前节点值，说明p和q位于节点的右子树，其最近的公共祖先节点也在右子树中。其余情况说明p，q分别位于当前节点的左右子树中，那么最近公共祖先节点就是当前根节点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> TreeNode <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode root, TreeNode p, TreeNode q)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(root == <span class="keyword">null</span> || p == <span class="keyword">null</span> || q == <span class="keyword">null</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(p.val &lt; root.val &amp;&amp; q.val &lt; root.val)&#123;</span><br><span class="line">        <span class="keyword">return</span> lowestCommonAncestor(root.left, p, q);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(p.val &gt; root.val &amp;&amp; q.val &gt; root.val)&#123;</span><br><span class="line">        <span class="keyword">return</span> lowestCommonAncestor(root.right, p, q);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/07/22/%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B8%AD%E4%B8%A4%E4%B8%AA%E8%8A%82%E7%82%B9%E7%9A%84%E6%9C%80%E4%BD%8E%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BingJie Dai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="今天的风甚为喧嚣">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/22/%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B8%AD%E4%B8%A4%E4%B8%AA%E8%8A%82%E7%82%B9%E7%9A%84%E6%9C%80%E4%BD%8E%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/" itemprop="url">二叉树中两个节点的最低公共祖先</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-22T14:09:37+08:00">
+                2020-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><blockquote>
+<p>给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。</p>
+<p>最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”</p>
+</blockquote>
+<p>例如，给定如下二叉树:  root = [3,5,1,6,2,0,8,null,null,7,4]</p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/15/binarytree.png" alt=""></p>
+<p>示例 1:</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: root = [<span class="number">3</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">0</span>,<span class="number">8</span>,<span class="literal">null</span>,<span class="literal">null</span>,<span class="number">7</span>,<span class="number">4</span>], p = <span class="number">5</span>, q = <span class="number">1</span></span><br><span class="line">输出: <span class="number">3</span></span><br><span class="line">解释: 节点 <span class="number">5</span> 和节点 <span class="number">1</span> 的最近公共祖先是节点 <span class="number">3</span>。</span><br></pre></td></tr></table></figure>
+
+<p>示例 2:</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: root = [<span class="number">3</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">0</span>,<span class="number">8</span>,<span class="literal">null</span>,<span class="literal">null</span>,<span class="number">7</span>,<span class="number">4</span>], p = <span class="number">5</span>, q = <span class="number">4</span></span><br><span class="line">输出: <span class="number">5</span></span><br><span class="line">解释: 节点 <span class="number">5</span> 和节点 <span class="number">4</span> 的最近公共祖先是节点 <span class="number">5</span>。因为根据定义最近公共祖先节点可以为节点本身。</span><br></pre></td></tr></table></figure>
+
+<p>说明:</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">所有节点的值都是唯一的。</span><br><span class="line">p、<span class="selector-tag">q</span> 为不同节点且均存在于给定的二叉树中。</span><br></pre></td></tr></table></figure>
+
+<h4 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h4><p>先后在左右子树中查找p和q两节点，如果p和q分别在两个子树中，那么父节点就是当前根节点。如果左子树空右子树不空说明p、q位于左子树中,如果左子树空右子树不空说明p、q位于右子树中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> TreeNode <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode root, TreeNode p, TreeNode q)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//判断当前根节点是否是p或者q</span></span><br><span class="line">    <span class="keyword">if</span>(root == <span class="keyword">null</span> || p == root || q == root)&#123;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//在左子树中查找p或者q</span></span><br><span class="line">    TreeNode left = lowestCommonAncestor(root.left, p, q);</span><br><span class="line">    <span class="comment">//在右子树中查找p或者q</span></span><br><span class="line">    TreeNode right = lowestCommonAncestor(root.right, p, q);</span><br><span class="line">    <span class="comment">//如果left为空说明p,q位于右子树，如果right为空说明p,q位于左子树，如果left、right都不为空说明p,q位于左右子树中，则公共父节点就是根节点</span></span><br><span class="line">    <span class="keyword">return</span> left == <span class="keyword">null</span> ? right : right == <span class="keyword">null</span> ? left : root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/07/21/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E7%9A%84%E6%9C%80%E5%A4%A7%E5%80%BC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1641,319 +1973,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/06/13/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BingJie Dai">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="今天的风甚为喧嚣">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/06/13/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/" itemprop="url">Java内存区域</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-13T15:36:29+08:00">
-                2020-06-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JVM/" itemprop="url" rel="index">
-                    <span itemprop="name">JVM</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Java虚拟机在执行Java程序的过程中会把它所管理的内存划分为若干个不同的区域。这些区域都有各自的用途，以及创建和销毁的时间。Java虚拟机所管理的内存将会包括如下几个运行时数据区域：</p>
-<p>==图片==</p>
-<h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4><p>​        Java程序需要先编译成字节码文件后再解释执行，字节码解释器在解释执行的过程中需要不断读取字节码的内容，程序计数器就是当前线程所执行的字节码的行号指示器。解释器依次读取程序计数器所指示的字节码内容。</p>
-<p>​        由于Java虚拟机的多线程是通过时间片轮转来实现的，那么当从一个线程切换到另外一个线程就需要知道这个线程上次执行到了哪里，以便从上次执行的地方继续执行，因此每一个线程都应该拥有一个程序计数器（程序计数器是线程私有的），各个线程之间计数器互不影响，独立存储。</p>
-<p>​        如果线程正在执行的是Java方法那么计数器记录的是正在执行的虚拟机字节码指令的地址；如果正在执行的是native方法，这个计数器的值就是空（undefined）。程序计数器是一块较小的内存空间，并且是唯一一个在Java虚拟机规范中没有规定任何<code>OutOfMemoryError</code>情况的区域。</p>
-<h4 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h4><p>​       与程序计数器一样Java虚拟机栈也是线程私有的，他的生命周期和线程相同。虚拟机栈描述的是Java方法执行的内存模型：每个方法在执行的同时会创建一个栈帧，用于存储局部变量/操作数栈、动态链接、方法出口等信息。方法从调用直至执行完成的过程，就对应一个栈帧在虚拟机栈中入栈到出栈的过程。</p>
-<p>​       局部变量表存放了编译期可知的各种基本数据类型（Boolean, byte, char, short, int, float, long, double）、对象引用（reference类型，它不等同于对象本身，可能是一个指向对象起始地址的引用指针，也可能是指向一个代表对象的句柄或其他与此对象相关的位置）和<code>returnAddress</code>类型（指向了一个字节码指令的地址）。局部变量表所需要的内存空间在编译期间完成分配，当进入一个方法时，这个方法所需要在栈帧中分配多大的局部变量空间时完全确定的，在运行期间不会改变局部变量表的大小。</p>
-<p>​       在Java虚拟机规范中，对这个区域规定了两种异常状况：如果线程请求的栈深度大于虚拟机栈所允许的深度，那么就会抛出<code>StackOverflowError</code>；如果虚拟机栈可以动态扩展，并且扩展后仍不能申请到足够的内存空间那么就会抛出<code>OutOfMemoryError</code>.</p>
-<h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4><p>​        本地方法栈和Java虚拟机栈的作用是类似的，只不过Java虚拟机栈是在执行Java方法时使用的，而本地方法栈时在执行native方法（非Java方法）时使用的虚拟机规范中并没有对本地方法栈中方法使用的语言、使用方式和数据结构进行强制规定，因此由具体的虚拟机自己实现。有的虚拟机（Sun HotSpot虚拟机）直接把本地方法栈和虚拟机栈合二为一与虚拟机栈相似该区域也会抛出<code>StackOverflowError</code>和<code>OutOfMemoryError</code>.</p>
-<h4 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h4><p>Java中的堆时内存管理中最大的一块，它是一个被线程共享的区域。它的唯一目的就是存放对象的实例，几乎所有的对象实例都在这分配内存。但是随着<code>JIT</code>编译器的发展与逃逸分析技术逐渐成熟，栈上分配、标量替换优化技术将会导致一些微妙的变化。</p>
-<p>Java堆时=是垃圾收集器管理的主要区域，因此很多时候也被称为<code>GC堆（Garbage Collected Heap）</code>。从内存回收的角度看，由于现在收集器都是采用分代收集算法，所以Java堆又可以细分为新生代和老年代；再细致一点分为<code>Eden</code>空间、<code>From Survivor</code>空间、 <code>To Survivor</code>空间等。从内分配角度来看，线程共享的Java堆中可能划分出多个线程私有的分配缓冲区（<code>Thread Local Allocation Buffer， TLAB</code>）。无论如何划分，都与存放内容无关，无论哪个区域，存储的都依旧是对象实例，进一步地划分是为了更好地回收内存，或者更快地分配内存。</p>
-<p>根据Java虚拟机规范，堆既可以是物理上连续的也可以是逻辑上连续的，既可以是固定大小的，也可以是可扩展的。不过当前的主流都是可扩展的，如果在堆中没有内存完成实例分配，并且堆也无法再扩展时，将会抛出<code>OutOfMemoryError</code>。</p>
-<h4 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h4><p>方法区与Java堆一样，是各个线程共享的内存区域，它用于存放已经被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。虽然Java虚拟机规范把方法区描述为堆的一个逻辑部分，但是它却有一个别名叫做Non-Heap（非堆），目的是与Java堆区分开。</p>
-<p>在HotSpot虚拟机中，设计人员将GC分代收集扩展至方法区，或者说使用永久代来实现方法区而已，这样HotSpot的垃圾收集器就可以像管理Java堆一样管理这部分内存，能够省去专门为方法区编写内存管理代码的工作。</p>
-<p>Java虚拟机规范对方法区的限制非常宽松，除了和Java堆一样不需要连续的内存和可以选择固定大小或者可扩展外，还可以选择不实现垃圾收集。相对而言，垃圾收集行为在这个区域是比较少出现的，但并非数据进入了方法区就如永久代的名字一样“永久”存在了。这个区域的内存回收的目标主要是针对常量池的回收和对类型的卸载，条件相当苛刻，但是这部分区域的回收确实是必要的。</p>
-<h4 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h4><p>运行时常量池是方法区的一部分。Class文件中除了有类的版本、字段、方法、接口等描述信息外，还有一项信息是常量池，用于存放编译器生成的各种字面量和符号引用，这部分内容将在类加载后进入方法区的运行时常量池中存放。</p>
-<p>由于常量池是方法区的一部分，自然受到方法区内存的限制，当常量池无法再申请到内存时会抛出<code>OutOfMemoryError</code>异常。</p>
-<h4 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h4><p>直接内存并不是虚拟机运行时数据区的一部分，也不是Java虚拟机规范中定义的内存区域。但是这部分内存也会被频繁地使用，而且也可能导致OutOfMemoryError异常出现。</p>
-<p>在JDK1.4中新加入了NIO(New Input/Output)类，引入了一种基于通道与缓冲区的I/O方式，它可以使用native函数库直接分配堆外内存，然后通过一个存储在Java堆中的DirectByteBuffer对象作为这块内存的引用进行操作。这样在一些情况下可以提高性能，因为避免了在Java堆和native堆中来回复制数据。这部分区域也会出现<code>OutOfMemoryError</code>异常。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/06/09/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%8E%B7%E5%8F%96open_id,union_id,phone/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BingJie Dai">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="今天的风甚为喧嚣">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/06/09/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%8E%B7%E5%8F%96open_id,union_id,phone/" itemprop="url">微信小程序获取open_id,union_id,phone大致流程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-09T23:10:24+08:00">
-                2020-06-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" itemprop="url" rel="index">
-                    <span itemprop="name">微信小程序</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-获取open-id-union-id"><a href="#1-获取open-id-union-id" class="headerlink" title="1.获取open_id, union_id"></a>1.获取open_id, union_id</h4><h5 id="小程序："><a href="#小程序：" class="headerlink" title="小程序："></a>小程序：</h5><ol>
-<li>wx.login获取code（有时限）</li>
-<li>wx.getUserInfo获取userInfo, rawData, encryptedData(带有敏感信息的加密数据)等数据</li>
-<li>将code连同加密数据encryptedData发给后台进行解密</li>
-</ol>
-<h5 id="后台："><a href="#后台：" class="headerlink" title="后台："></a>后台：</h5><ol>
-<li>根据code, appid, app_secret向微信服务器发送GET请求，获取open_id, session_key（用于解密，有时限），union_id.</li>
-<li>使用session_key对密文encryptedData进行解密</li>
-</ol>
-<h6 id="疑问？"><a href="#疑问？" class="headerlink" title="疑问？"></a>疑问？</h6><p>既然后台发送GET请求到微信服务器能够获取到open_id, union_id为啥还要使用session_key的方式对encryptedData解密获取open_id, union_id?</p>
-<p><a href="https://juejin.im/entry/589944da570c3500624e4554" target="_blank" rel="noopener">https://juejin.im/entry/589944da570c3500624e4554</a></p>
-<h4 id="2-获取手机号"><a href="#2-获取手机号" class="headerlink" title="2.获取手机号"></a>2.获取手机号</h4><p>button组件的open-type设置为getPhoneNumber,通过回调函数获取到加密数据，然后后台根据session_key和app_id解密数据。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2006,7 +2025,7 @@
             
               <div class="site-state-item site-state-posts">
                 <a href="/archives">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2017,7 +2036,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

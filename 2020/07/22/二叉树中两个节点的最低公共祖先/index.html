@@ -118,7 +118,7 @@
 
 
 
-  <meta name="keywords" content="微信小程序," />
+  <meta name="keywords" content="二叉树," />
 
 
 
@@ -129,17 +129,19 @@
 
 
 
-<meta name="description" content="1.获取open_id, union_id小程序： wx.login获取code（有时限） wx.getUserInfo获取userInfo, rawData, encryptedData(带有敏感信息的加密数据)等数据 将code连同加密数据encryptedData发给后台进行解密  后台： 根据code, appid, app_secret向微信服务器发送GET请求，获取open_id, s">
+<meta name="description" content="题目描述 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。 最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”  例如，给定如下二叉树:  root &#x3D; [3,5,1,6,2,0,8,null,null,7,4]  示例 1: 123输入: root &#x3D; [3,5">
 <meta property="og:type" content="article">
-<meta property="og:title" content="微信小程序获取open_id,union_id,phone大致流程">
-<meta property="og:url" content="https://dbj-prog.github.io/2020/06/09/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%8E%B7%E5%8F%96open_id,union_id,phone/index.html">
+<meta property="og:title" content="二叉树中两个节点的最低公共祖先">
+<meta property="og:url" content="https://dbj-prog.github.io/2020/07/22/%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B8%AD%E4%B8%A4%E4%B8%AA%E8%8A%82%E7%82%B9%E7%9A%84%E6%9C%80%E4%BD%8E%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/index.html">
 <meta property="og:site_name" content="今天的风甚为喧嚣">
-<meta property="og:description" content="1.获取open_id, union_id小程序： wx.login获取code（有时限） wx.getUserInfo获取userInfo, rawData, encryptedData(带有敏感信息的加密数据)等数据 将code连同加密数据encryptedData发给后台进行解密  后台： 根据code, appid, app_secret向微信服务器发送GET请求，获取open_id, s">
-<meta property="article:published_time" content="2020-06-09T15:10:24.925Z">
-<meta property="article:modified_time" content="2020-06-09T15:23:42.696Z">
+<meta property="og:description" content="题目描述 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。 最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”  例如，给定如下二叉树:  root &#x3D; [3,5,1,6,2,0,8,null,null,7,4]  示例 1: 123输入: root &#x3D; [3,5">
+<meta property="og:image" content="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/15/binarytree.png">
+<meta property="article:published_time" content="2020-07-22T06:09:37.212Z">
+<meta property="article:modified_time" content="2020-07-22T06:52:40.925Z">
 <meta property="article:author" content="BingJie Dai">
-<meta property="article:tag" content="微信小程序">
+<meta property="article:tag" content="二叉树">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/15/binarytree.png">
 
 
 
@@ -169,13 +171,13 @@
 
 
 
-  <link rel="canonical" href="https://dbj-prog.github.io/2020/06/09/微信小程序获取open_id,union_id,phone/"/>
+  <link rel="canonical" href="https://dbj-prog.github.io/2020/07/22/二叉树中两个节点的最低公共祖先/"/>
 
 
 
 
 
-  <title>微信小程序获取open_id,union_id,phone大致流程 | 今天的风甚为喧嚣</title>
+  <title>二叉树中两个节点的最低公共祖先 | 今天的风甚为喧嚣</title>
   
 
 
@@ -302,7 +304,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/06/09/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%8E%B7%E5%8F%96open_id,union_id,phone/">
+    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/07/22/%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B8%AD%E4%B8%A4%E4%B8%AA%E8%8A%82%E7%82%B9%E7%9A%84%E6%9C%80%E4%BD%8E%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BingJie Dai">
@@ -319,7 +321,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">微信小程序获取open_id,union_id,phone大致流程</h1>
+          <h1 class="post-title" itemprop="name headline">二叉树中两个节点的最低公共祖先</h1>
         
 
         <div class="post-meta">
@@ -331,8 +333,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-09T23:10:24+08:00">
-                2020-06-09
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-22T14:09:37+08:00">
+                2020-07-22
               </time>
             
 
@@ -354,8 +356,19 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" itemprop="url" rel="index">
-                    <span itemprop="name">微信小程序</span>
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
                   </a>
                 </span>
 
@@ -391,18 +404,24 @@
       
 
       
-        <h4 id="1-获取open-id-union-id"><a href="#1-获取open-id-union-id" class="headerlink" title="1.获取open_id, union_id"></a>1.获取open_id, union_id</h4><h5 id="小程序："><a href="#小程序：" class="headerlink" title="小程序："></a>小程序：</h5><ol>
-<li>wx.login获取code（有时限）</li>
-<li>wx.getUserInfo获取userInfo, rawData, encryptedData(带有敏感信息的加密数据)等数据</li>
-<li>将code连同加密数据encryptedData发给后台进行解密</li>
-</ol>
-<h5 id="后台："><a href="#后台：" class="headerlink" title="后台："></a>后台：</h5><ol>
-<li>根据code, appid, app_secret向微信服务器发送GET请求，获取open_id, session_key（用于解密，有时限），union_id.</li>
-<li>使用session_key对密文encryptedData进行解密</li>
-</ol>
-<h6 id="疑问？"><a href="#疑问？" class="headerlink" title="疑问？"></a>疑问？</h6><p>既然后台发送GET请求到微信服务器能够获取到open_id, union_id为啥还要使用session_key的方式对encryptedData解密获取open_id, union_id?</p>
-<p><a href="https://juejin.im/entry/589944da570c3500624e4554" target="_blank" rel="noopener">https://juejin.im/entry/589944da570c3500624e4554</a></p>
-<h4 id="2-获取手机号"><a href="#2-获取手机号" class="headerlink" title="2.获取手机号"></a>2.获取手机号</h4><p>button组件的open-type设置为getPhoneNumber,通过回调函数获取到加密数据，然后后台根据session_key和app_id解密数据。</p>
+        <h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><blockquote>
+<p>给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。</p>
+<p>最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”</p>
+</blockquote>
+<p>例如，给定如下二叉树:  root = [3,5,1,6,2,0,8,null,null,7,4]</p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/15/binarytree.png" alt=""></p>
+<p>示例 1:</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: root = [<span class="number">3</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">0</span>,<span class="number">8</span>,<span class="literal">null</span>,<span class="literal">null</span>,<span class="number">7</span>,<span class="number">4</span>], p = <span class="number">5</span>, q = <span class="number">1</span></span><br><span class="line">输出: <span class="number">3</span></span><br><span class="line">解释: 节点 <span class="number">5</span> 和节点 <span class="number">1</span> 的最近公共祖先是节点 <span class="number">3</span>。</span><br></pre></td></tr></table></figure>
+
+<p>示例 2:</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: root = [<span class="number">3</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">0</span>,<span class="number">8</span>,<span class="literal">null</span>,<span class="literal">null</span>,<span class="number">7</span>,<span class="number">4</span>], p = <span class="number">5</span>, q = <span class="number">4</span></span><br><span class="line">输出: <span class="number">5</span></span><br><span class="line">解释: 节点 <span class="number">5</span> 和节点 <span class="number">4</span> 的最近公共祖先是节点 <span class="number">5</span>。因为根据定义最近公共祖先节点可以为节点本身。</span><br></pre></td></tr></table></figure>
+
+<p>说明:</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">所有节点的值都是唯一的。</span><br><span class="line">p、<span class="selector-tag">q</span> 为不同节点且均存在于给定的二叉树中。</span><br></pre></td></tr></table></figure>
+
+<h4 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h4><p>先后在左右子树中查找p和q两节点，如果p和q分别在两个子树中，那么父节点就是当前根节点。如果左子树空右子树不空说明p、q位于左子树中,如果左子树空右子树不空说明p、q位于右子树中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> TreeNode <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode root, TreeNode p, TreeNode q)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//判断当前根节点是否是p或者q</span></span><br><span class="line">    <span class="keyword">if</span>(root == <span class="keyword">null</span> || p == root || q == root)&#123;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//在左子树中查找p或者q</span></span><br><span class="line">    TreeNode left = lowestCommonAncestor(root.left, p, q);</span><br><span class="line">    <span class="comment">//在右子树中查找p或者q</span></span><br><span class="line">    TreeNode right = lowestCommonAncestor(root.right, p, q);</span><br><span class="line">    <span class="comment">//如果left为空说明p,q位于右子树，如果right为空说明p,q位于左子树，如果left、right都不为空说明p,q位于左右子树中，则公共父节点就是根节点</span></span><br><span class="line">    <span class="keyword">return</span> left == <span class="keyword">null</span> ? right : right == <span class="keyword">null</span> ? left : root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -420,7 +439,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag"># 微信小程序</a>
+            <a href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag"># 二叉树</a>
           
         </div>
       
@@ -433,8 +452,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/06/01/maven%E7%BC%96%E8%AF%91sun.security.validator.ValidatorException/" rel="next" title="maven编译sun.security.validator.ValidatorException">
-                <i class="fa fa-chevron-left"></i> maven编译sun.security.validator.ValidatorException
+              <a href="/2020/07/21/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E7%9A%84%E6%9C%80%E5%A4%A7%E5%80%BC/" rel="next" title="滑动窗口的最大值">
+                <i class="fa fa-chevron-left"></i> 滑动窗口的最大值
               </a>
             
           </div>
@@ -443,8 +462,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/06/13/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/" rel="prev" title="Java内存区域">
-                Java内存区域 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/07/22/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%AD%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E8%8A%82%E7%82%B9/" rel="prev" title="二叉搜索树的最近公共祖先">
+                二叉搜索树的最近公共祖先 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -589,7 +608,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-获取open-id-union-id"><span class="nav-number">1.</span> <span class="nav-text">1.获取open_id, union_id</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#小程序："><span class="nav-number">1.1.</span> <span class="nav-text">小程序：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#后台："><span class="nav-number">1.2.</span> <span class="nav-text">后台：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#疑问？"><span class="nav-number">1.2.1.</span> <span class="nav-text">疑问？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-获取手机号"><span class="nav-number">2.</span> <span class="nav-text">2.获取手机号</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li></ol></div>
             
 
           </div>
