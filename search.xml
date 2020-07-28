@@ -880,4 +880,16 @@
         <category>LeetCode</category>
       </categories>
   </entry>
+  <entry>
+    <title>SpringMVC数据绑定流程</title>
+    <url>/2020/07/28/SpringMVC%E6%95%B0%E6%8D%AE%E7%BB%91%E5%AE%9A%E6%B5%81%E7%A8%8B/</url>
+    <content><![CDATA[<p>SpringMVC主框架将ServletRequest对象及目标方法的入参实例传递给WebDataBindFactory实例，以创建DataBinder实例对象</p>
+<p>DataBinder调用装配在SpringMVC上下文中的ConversionService组件进行数据类型转换、数据格式化工作。将Servlet中请求信息填充到入参对象中</p>
+<p>调用Validator组件对已经绑定请求消息的入参对象进行数据合法性校验，并最终生活数据绑定结果BindingData对象</p>
+<p>SpringMVC抽取BindingResult中的入参对象和校验错误对象，将他们赋给处理方法的响应入参</p>
+]]></content>
+      <categories>
+        <category>SpringMVC</category>
+      </categories>
+  </entry>
 </search>
