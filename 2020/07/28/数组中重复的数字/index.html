@@ -118,7 +118,7 @@
 
 
 
-  <meta name="keywords" content="栈,队列," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -129,17 +129,15 @@
 
 
 
-<meta name="description" content="题目描述 用两个栈来实现一个队列，完成队列的 Push 和 Pop 操作。  思路队列的特点是先进先出,栈的特点是后进先出,顺序进栈的数出栈后变逆序,再经过一次入栈和出栈就变回了原来的顺序.  如果两个栈都空,执行pop操作应抛出异常 如果stack2空,执行pop操作应先将stack1中的内容出栈并压入stack2中   12345678910111213141516171819public c">
+<meta name="description" content="题目描述 在一个长度为n的数组里的所有数字都在0到n-1的范围内。 数组中某些数字是重复的，但不知道有几个数字是重复的。也不知道每个数字重复几次。请找出数组中任意一个重复的数字。 例如，如果输入长度为7的数组{2,3,1,0,2,5,3}，那么对应的输出是第一个重复的数字2。  解题思路要求时间复杂度 O(N)，空间复杂度 O(1)。因此不能使用排序的方法，也不能使用额外的标记数组。 由于数组中的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="用两个栈来完成一个队列的入队和出队">
-<meta property="og:url" content="https://dbj-prog.github.io/2020/05/29/%E7%94%A8%E4%B8%A4%E4%B8%AA%E6%A0%88%E6%9D%A5%E5%AE%8C%E6%88%90%E4%B8%80%E4%B8%AA%E9%98%9F%E5%88%97%E7%9A%84%E5%85%A5%E9%98%9F%E5%92%8C%E5%87%BA%E9%98%9F/index.html">
+<meta property="og:title" content="数组中重复的数字">
+<meta property="og:url" content="https://dbj-prog.github.io/2020/07/28/%E6%95%B0%E7%BB%84%E4%B8%AD%E9%87%8D%E5%A4%8D%E7%9A%84%E6%95%B0%E5%AD%97/index.html">
 <meta property="og:site_name" content="今天的风甚为喧嚣">
-<meta property="og:description" content="题目描述 用两个栈来实现一个队列，完成队列的 Push 和 Pop 操作。  思路队列的特点是先进先出,栈的特点是后进先出,顺序进栈的数出栈后变逆序,再经过一次入栈和出栈就变回了原来的顺序.  如果两个栈都空,执行pop操作应抛出异常 如果stack2空,执行pop操作应先将stack1中的内容出栈并压入stack2中   12345678910111213141516171819public c">
-<meta property="article:published_time" content="2020-05-29T08:34:40.546Z">
-<meta property="article:modified_time" content="2020-05-31T01:53:17.008Z">
+<meta property="og:description" content="题目描述 在一个长度为n的数组里的所有数字都在0到n-1的范围内。 数组中某些数字是重复的，但不知道有几个数字是重复的。也不知道每个数字重复几次。请找出数组中任意一个重复的数字。 例如，如果输入长度为7的数组{2,3,1,0,2,5,3}，那么对应的输出是第一个重复的数字2。  解题思路要求时间复杂度 O(N)，空间复杂度 O(1)。因此不能使用排序的方法，也不能使用额外的标记数组。 由于数组中的">
+<meta property="article:published_time" content="2020-07-28T15:30:10.432Z">
+<meta property="article:modified_time" content="2020-07-28T15:40:33.664Z">
 <meta property="article:author" content="BingJie Dai">
-<meta property="article:tag" content="栈">
-<meta property="article:tag" content="队列">
 <meta name="twitter:card" content="summary">
 
 
@@ -170,13 +168,13 @@
 
 
 
-  <link rel="canonical" href="https://dbj-prog.github.io/2020/05/29/用两个栈来完成一个队列的入队和出队/"/>
+  <link rel="canonical" href="https://dbj-prog.github.io/2020/07/28/数组中重复的数字/"/>
 
 
 
 
 
-  <title>用两个栈来完成一个队列的入队和出队 | 今天的风甚为喧嚣</title>
+  <title>数组中重复的数字 | 今天的风甚为喧嚣</title>
   
 
 
@@ -337,7 +335,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/05/29/%E7%94%A8%E4%B8%A4%E4%B8%AA%E6%A0%88%E6%9D%A5%E5%AE%8C%E6%88%90%E4%B8%80%E4%B8%AA%E9%98%9F%E5%88%97%E7%9A%84%E5%85%A5%E9%98%9F%E5%92%8C%E5%87%BA%E9%98%9F/">
+    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/07/28/%E6%95%B0%E7%BB%84%E4%B8%AD%E9%87%8D%E5%A4%8D%E7%9A%84%E6%95%B0%E5%AD%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BingJie Dai">
@@ -354,7 +352,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">用两个栈来完成一个队列的入队和出队</h1>
+          <h1 class="post-title" itemprop="name headline">数组中重复的数字</h1>
         
 
         <div class="post-meta">
@@ -366,8 +364,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-29T16:34:40+08:00">
-                2020-05-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-28T23:30:10+08:00">
+                2020-07-28
               </time>
             
 
@@ -389,8 +387,19 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构与算法</span>
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
                   </a>
                 </span>
 
@@ -431,15 +440,14 @@
 
       
         <h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><blockquote>
-<p>用两个栈来实现一个队列，完成队列的 Push 和 Pop 操作。</p>
+<p>在一个长度为n的数组里的所有数字都在0到n-1的范围内。 数组中某些数字是重复的，但不知道有几个数字是重复的。也不知道每个数字重复几次。请找出数组中任意一个重复的数字。 例如，如果输入长度为7的数组{2,3,1,0,2,5,3}，那么对应的输出是第一个重复的数字2。</p>
 </blockquote>
-<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>队列的特点是先进先出,栈的特点是后进先出,顺序进栈的数出栈后变逆序,再经过一次入栈和出栈就变回了原来的顺序.</p>
-<ul>
-<li>如果两个栈都空,执行pop操作应抛出异常</li>
-<li>如果stack2空,执行pop操作应先将stack1中的内容出栈并压入stack2中</li>
-<li></li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    Stack&lt;Integer&gt; stack1 = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">    Stack&lt;Integer&gt; stack2 = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> node)</span> </span>&#123;</span><br><span class="line">        stack1.push(node);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//如果stack1和stack2都空应抛出异常</span></span><br><span class="line">        <span class="keyword">if</span>(!stack2.empty())&#123;</span><br><span class="line">            <span class="keyword">return</span> stack2.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(!stack1.empty())&#123;</span><br><span class="line">            stack2.push(stack1.pop());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> stack2.pop();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h4><p>要求时间复杂度 O(N)，空间复杂度 O(1)。因此不能使用排序的方法，也不能使用额外的标记数组。</p>
+<p>由于数组中的值在[0, n-1]之间，所以可以将数组中i位置的元素j放入到数组的j位置上，如果j位置上已经是j了，那么就说明该元素重复，返回这个元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">duplicate</span><span class="params">(<span class="keyword">int</span> numbers[],<span class="keyword">int</span> length,<span class="keyword">int</span> [] duplication)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(numbers == <span class="keyword">null</span> || numbers.length &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++)&#123;</span><br><span class="line">        <span class="comment">//循环将元素放入到对应的位置</span></span><br><span class="line">        <span class="keyword">while</span>(i != numbers[i])&#123;</span><br><span class="line">            <span class="comment">//判断numbers[i]位置上的元素是否已经有了相同元素（出现重复）</span></span><br><span class="line">            <span class="keyword">if</span>(numbers[i] == numbers[numbers[i]])&#123;</span><br><span class="line">                duplication[<span class="number">0</span>] = numbers[i];</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//将当前元素放到正确的位置上</span></span><br><span class="line">            swap(numbers, i, numbers[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] numbers, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp = numbers[i];</span><br><span class="line">    numbers[i] = numbers[j];</span><br><span class="line">    numbers[j] = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果在没有限制不可使用额外空间的条件下，可以使用标记数组来解决。对于数组中的每一个元素i判断标记数组中对应的i位置位置是否被标记为true,如果是表明元素重复，返回该元素，否则将元素标记为true.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">duplicate</span><span class="params">(<span class="keyword">int</span> numbers[],<span class="keyword">int</span> length,<span class="keyword">int</span> [] duplication)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span>[] a = <span class="keyword">new</span> <span class="keyword">boolean</span>[length];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(a[numbers[i]] == <span class="keyword">true</span>)&#123;</span><br><span class="line">            duplication[<span class="number">0</span>] = numbers[i];</span><br><span class="line">            ret = <span class="keyword">true</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            a[numbers[i]] = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
       
@@ -456,14 +464,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/%E6%A0%88/" rel="tag"><i class="fa fa-tag"></i> 栈</a>
-          
-            <a href="/tags/%E9%98%9F%E5%88%97/" rel="tag"><i class="fa fa-tag"></i> 队列</a>
-          
-        </div>
-      
 
       
       
@@ -473,8 +473,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/05/29/%E9%87%8D%E5%BB%BA%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="next" title="重建二叉树">
-                <i class="fa fa-chevron-left"></i> 重建二叉树
+              <a href="/2020/07/25/%E6%9E%84%E5%BB%BA%E4%B9%98%E6%9C%BA%E6%95%B0%E7%BB%84/" rel="next" title="构建乘机数组">
+                <i class="fa fa-chevron-left"></i> 构建乘机数组
               </a>
             
           </div>
@@ -482,10 +482,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/05/31/Java%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0/" rel="prev" title="Java中的线程池">
-                Java中的线程池 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -629,7 +625,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思路"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li></ol></div>
             
 
           </div>
