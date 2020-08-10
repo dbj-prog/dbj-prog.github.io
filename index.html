@@ -332,6 +332,169 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/08/10/%E6%B7%B1%E5%85%8B%E9%9A%86%E5%92%8C%E6%B5%85%E5%85%8B%E9%9A%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BingJie Dai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="今天的风甚为喧嚣">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/08/10/%E6%B7%B1%E5%85%8B%E9%9A%86%E5%92%8C%E6%B5%85%E5%85%8B%E9%9A%86/" itemprop="url">深克隆和浅克隆</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-10T15:50:56+08:00">
+                2020-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+		  
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="什么是Java-clone"><a href="#什么是Java-clone" class="headerlink" title="什么是Java clone"></a>什么是Java clone</h4><p>clone就是复制源对象的一个副本对象，默认情况下Java复制是逐个字段进行复制的，这是因为Object这个类对具体的类对象的结构一无所知。当JVM执行克隆时会进行如此下的操作：</p>
+<ol>
+<li>如果被拷贝对象中包含基本数据类型，那么基本数据类型会被完全复制一份。</li>
+<li>如果被拷贝对象中包含引用类型的对象，那么默认情况下仅仅对引用进行简单的复制，实际上两个引用指向相同的内存地址。</li>
+</ol>
+<p>由于包含引用类型的对象的拷贝与源对象共享子对象，所以，任何一方改变子对象，都会对其他对象造成影响。如果引用类型是不可变的，那么就不会造成影响，比如String类型。</p>
+<h4 id="Cloneable接口"><a href="#Cloneable接口" class="headerlink" title="Cloneable接口"></a>Cloneable接口</h4><p>要想实现自定义的克隆操作，就需要实现Cloneable接口，并重写clone()方法(<strong>clone()方法并不是Cloneable接口中的方法，而是Object中的protected方法</strong>)，此处的Cloneable是标识接口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Employee</span> <span class="keyword">implements</span> <span class="title">Cloneable</span></span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Employee <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportException</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (Employee)<span class="keyword">super</span>.clone();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//getter and setter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="浅克隆"><a href="#浅克隆" class="headerlink" title="浅克隆"></a>浅克隆</h4><p>浅克隆就是仅仅克隆基本数据类型，对于应用类型引用的是源对象中的引用对象，即在浅克隆中，克隆前后的引用类型指向相同的内存地址。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Employee</span> <span class="keyword">implements</span> <span class="title">Cloneable</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Department dept;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(<span class="keyword">int</span> id, String name, Department dept)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.dept = dept;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Employee <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportException</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (Employee)<span class="keyword">super</span>.clone();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//getter and setter</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Department</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Department</span><span class="params">(<span class="keyword">int</span> id, String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//getter and setter</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CloneTest</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> CloneNotSupportException</span>&#123;</span><br><span class="line">        Department dept = <span class="keyword">new</span> Department(<span class="number">1</span>, <span class="string">"Software Develop"</span>);</span><br><span class="line">        Employee emp = <span class="keyword">new</span> Employee(<span class="number">11</span>, <span class="string">"asd"</span>, dept);</span><br><span class="line">        Employee copy = emp.clone();</span><br><span class="line">        System.out.println(emp == copy);<span class="comment">//false</span></span><br><span class="line">        copy.setName(<span class="string">"qwe"</span>);</span><br><span class="line">        System.out.println(emp.getName + <span class="string">"-&gt;"</span> + copy.getName());<span class="comment">//asd-&gt;qwe</span></span><br><span class="line">        System.out.println(emp.dept == copy.dept);<span class="comment">//true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="深克隆"><a href="#深克隆" class="headerlink" title="深克隆"></a>深克隆</h4><p>深克隆会对类中的其他引用类型也进行拷贝，而不仅仅是进行简单的引用复制（指向相同的对象）。具体实现和浅克隆相差不大，实现Cloneable接口，重写Clone()方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Employee</span> <span class="keyword">implements</span> <span class="title">Cloneable</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Employee <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportException</span>&#123;</span><br><span class="line">        Employee clone = (Employee)<span class="keyword">super</span>.clone();</span><br><span class="line">        <span class="comment">//克隆可变的引用类型对象，Department也应该实现Cloneable接口并实现clone()方法</span></span><br><span class="line">        Department dept = (Department)<span class="keyword">super</span>.clone();</span><br><span class="line">        clone.department = dept;</span><br><span class="line">        <span class="keyword">return</span> clone;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//getter and setter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>深拷贝时，类中的引用类型也必须要实现Cloneable接口并重写clone()方法，只要clone方法中含有没有实现Cloneable接口的对象，Object类中的clone()方法就会抛出一个CloneNotSupportException异常。</p>
+<p>除了使用上述方式进行深克隆外，还可以使用序列化的方式来对对象进行深克隆,但是并不建议这样做，因为序列化开销很大，并且并不是所有的类都实现了Serializable接口（也是标识接口）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Employee <span class="title">clone</span><span class="params">(Employee obj)</span></span>&#123;</span><br><span class="line">    Employee cloneObj = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//写入字节流</span></span><br><span class="line">        ByteArrayOutputStream out = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">        ObjectOutputStream obs = <span class="keyword">new</span> ObjectOutputStream(out);</span><br><span class="line">        obs.writeObject(obj);</span><br><span class="line">        obs.close();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//分配内存，写入原始对象，生成新对象</span></span><br><span class="line">        ByteArrayInputStream ios = <span class="keyword">new</span> ByteArrayInputStream(out.toByteArray());</span><br><span class="line">        ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(ios);</span><br><span class="line">        <span class="comment">//返回生成的新对象</span></span><br><span class="line">        cloneObj = (Employee) ois.readObject();</span><br><span class="line">        ois.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cloneObj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/07/29/TCP%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%BB%BA%E7%AB%8B%E4%B8%8E%E9%87%8A%E6%94%BE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1770,185 +1933,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://dbj-prog.github.io/2020/07/19/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BingJie Dai">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="今天的风甚为喧嚣">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/07/19/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/" itemprop="url">进程与线程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-19T13:39:44+08:00">
-                2020-07-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-		  
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="进程的基本概念"><a href="#进程的基本概念" class="headerlink" title="进程的基本概念"></a>进程的基本概念</h4><blockquote>
-<p>进程是具有独立功能的程序在一个数据集合上运行的过程，它是系统进行资源分配和调度的基本单位（在引入线程后，进程不再是调度的基本单位，线程才是）</p>
-</blockquote>
-<p>在多道程序环境下，允许多个程序并发执行，此时它们将失去封闭性，并且具有间断性和不可再现性的特征。这些特征是动态的，而传统的程序本身是静态的一组指令的集合，它并不能描述这种动态的特征，为此引入了进程的概念，以便更好地描述和控制程序的并发执行，实现操作系统的并发性和共享性。</p>
-<p>为了使参与并发执行的程序能够独立的运行，必须为之配置一个专门的数据结构，称为进程控制块（PCB）。系统利用PCB来描述进程的基本情况和运行状态，进而控制和管理进程。程序段、数据段和PCB三部分组成了进程映像，其中PCB是进程的唯一标识。所谓创建进程就是创建PCB，撤销进程就是撤销PCB。进程映像是静态的，进程是动态的。</p>
-<h5 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h5><ol>
-<li>创建：进程正在被创建，创建包括分配PCB（申请失败会创建失败）、为进程分配资源（资源分配失败会导致进程进入到阻塞态并不是创建失败）</li>
-<li>就绪态：进程创建完成，一旦被处理机调度即可调度，即只缺少处理及资源</li>
-<li>运行态：正在被处理机执行</li>
-<li>阻塞态：进程因某事件而被阻塞，如等待资源为可用或等待I/O完成。即使处理机空闲该进程也无法运行。注意和就绪态的区别</li>
-<li>终止态：进程正常结束或者出现了异常导致结束。</li>
-</ol>
-<h5 id="进程通信"><a href="#进程通信" class="headerlink" title="进程通信"></a>进程通信</h5><p>进程通信是指进程之间的信息交换。PV操作时低级通信方式，高级通信方式是指以较高的效率传输大量数据的通信方式。</p>
-<p><strong>1.共享存储</strong></p>
-<p>通信进程之间存在一块共享的内存，通过对这块区域进行读写操作完成进程之间的信息交换。在对共享空间进行读写操作时，需要使用同步互斥工具。</p>
-<p><strong>2.消息传递</strong></p>
-<p>进程间的数据交换是以格式化的消息为单位的。若通信的进程之间不存在可直接访问的共享空间，则必须利用操作系统提供的消息传递方法实现进程通信。进程通过系统提供的发送和接收消息两个原语进行数据交换。</p>
-<p>a. 直接通信方式：发送进程直接把消息发送给接收进程，并将其挂在接收进程的消息缓冲队列上，接收进程从消息缓冲队列中取得消息。</p>
-<p>b. 间接通信方式：发送进程把消息发送到某个中间实体中，接收进程从中间实体中获取消息。这种中间实体称为信箱，这种通信方式又称为信箱通信。</p>
-<p><strong>3.管道通信</strong></p>
-<p>所谓“管道”，是指用于连接一个读进程和一个写进程以实现他们之间通信的一个共享文件，又名pipe文件（Linux中大小为4KB）。向管道（共享文件）提供输入的发送进程，以字符流方式将大量的数据写入到管道，而接收管道输出的接收进程，则从管道中接收数据。为了协调双方的通信，管道机制必须提供以下三方面协调能力：互斥、同步和确定对方存在。管道通信是半双工通信，如果想实现全双工需要使用两个管道文件。</p>
-<h4 id="线程的基本概念"><a href="#线程的基本概念" class="headerlink" title="线程的基本概念"></a>线程的基本概念</h4><p>引入进程的目的是为了是多道程序并发执行，以提高资源利用率和系统的吞吐量，增加并发程度；而引入线程则是为了减小程序在并发执行时付出的时空开销，提高系统的并发性能。</p>
-<p>线程也称为“轻量级线程”，它是一个基本的CPU执行单元，由线程ID、程序计数器、寄存器集合和堆栈组成。线程是进程中的一个实体，是被系统独立调度和分派的基本单位，线程除了拥有一些运行时必不可少的资源外不拥有其他资源，进程才是资源分配的基本单位。进程中的线程共享进程中的资源。</p>
-<h4 id="进程与线程的比较"><a href="#进程与线程的比较" class="headerlink" title="进程与线程的比较"></a>进程与线程的比较</h4><ol>
-<li><p>调度：在传统操作系统种线程是资源分配和调度的基本单位，引入线程后线程是调度的基本单位，而进程依旧是资源的分配单位。在同一个进程中，线程的切换不会引起进程切换。</p>
-</li>
-<li><p>拥有资源：不论是否引入了线程，进程都是资源的分配单位，线程除了必不可少的资源外并不拥有其他资源，进程中的线程共享进程的资源。如果线程也拥有资源，那么切换线程和切换进程的开销一样大，也就没有必要引入线程了。</p>
-</li>
-<li><p>并发性：引入线程后，不仅进程之间可以并发执行，线程之间也可以并发执行，从而提高了系统的并发性。</p>
-</li>
-<li><p>系统开销：由于创建和撤销进程系统需要为之分配和回收资源，因此操作系统所付出的开销远大于创建或撤销线程时的开销。</p>
-</li>
-<li><p>地址空间和其他资源：线程的地址空间相互之间独立，同一进程中的线程共享进程的资源，某进程中的线程对其他线程是不可见的。</p>
-</li>
-<li><p>通信：进程通信（IPC）需要进程同步或互斥手段的辅助，以保证数据的一致性，而线程间可以直接读/写进程数据段（如全局变量）来进行通信。</p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2001,7 +1985,7 @@
             
               <div class="site-state-item site-state-posts">
                 <a href="/archives">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2023,7 +2007,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
